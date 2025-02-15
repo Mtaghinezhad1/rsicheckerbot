@@ -13,7 +13,7 @@ bot.on('message', (msg) => {
 
   // اگر کاربر پیام "/start" را ارسال کند
   if (text === '/start') {
-    bot.sendMessage(chatId, 'Hello World!');
+    bot.sendMessage(chatId, 'Hello Worldddddddddd!');
   }
 });
 
