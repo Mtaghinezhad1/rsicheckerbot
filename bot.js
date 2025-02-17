@@ -21,7 +21,7 @@ bot.on('message', (msg) => {
       clearInterval(intervals[chatId]);
     }
 
-    // هر 5 ثانیه یک پیام "Hello World!" ارسال کنید
+    // هر 60 ثانیه یک پیام "Hello World!" ارسال کنید
     intervals[chatId] = setInterval(() => {
       // fetch api for loading data
 const apiUrl = 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72';
@@ -46,11 +46,16 @@ async function fetchData() {
 fetchData().then(jsonData => {
 const data = jsonData;
 const candles = data.Data.Data;
-bot.sendMessage(chatId, calculateRSI(candles)[calculateRSI(candles).length-1]);
-});
-    }, 10000); // 5000 میلی‌ثانیه = 5 ثانیه
 
-    bot.sendMessage(chatId, 'شروع شد! هر 5 ثانیه یک Hello World! ارسال می‌شود.');
+bot.sendMessage(chatId, rsi(candles)[rsi(candles).length-1]);
+// it checks the conditions to see if it can send message?
+if ((rsi(candles)[rsi(candles).length-1]) < 35 || (rsi(candles)[rsi(candles).length-1] > 65) ){
+  bot.sendMessage(chatId, 'its time to trade');
+}
+});
+    }, 60000); // 60000 میلی‌ثانیه = 60 ثانیه
+
+    bot.sendMessage(chatId, 'شروع شد! هر 60 ثانیه یک Hello World! ارسال می‌شود.');
   }
 
   // اگر کاربر پیام "/stop" را ارسال کند
@@ -67,7 +72,7 @@ bot.sendMessage(chatId, calculateRSI(candles)[calculateRSI(candles).length-1]);
 });
 
 // Function to calculate RSI using RMA (Relative Moving Average)
-function calculateRSI(candles, period = 14) {
+function rsi(candles, period = 14) {
   if (candles.length < period) {
       throw new Error("Not enough data to calculate RSI");
   }
@@ -114,8 +119,8 @@ function calculateRSI(candles, period = 14) {
           rsiValues.push(100); // Avoid division by zero
       } else {
           const rs = avgGain[i] / avgLoss[i];
-          const rsi = 100 - (100 / (1 + rs));
-          rsiValues.push(rsi);
+          const singleRsi = 100 - (100 / (1 + rs));
+          rsiValues.push(singleRsi);
       }
   }
 
