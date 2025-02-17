@@ -23,14 +23,12 @@ bot.on('message', (msg) => {
 
     // هر 60 ثانیه یک پیام "Hello World!" ارسال کنید
     intervals[chatId] = setInterval(() => {
-      // fetch api for loading data
-      const apiUrl = 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72';
-      let jsonData;
       // Define API URLs
       const apiUrls = [
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=BTC&tsym=USD&limit=72&aggregate=15',
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72',
-        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72',
-        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=LTC&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=LTC&tsym=USD&limit=72',
       ];
 
       async function fetchData() {
@@ -55,8 +53,8 @@ bot.on('message', (msg) => {
           const data = response;
           const candles = data.Data.Data;
 
-          bot.sendMessage(chatId, `rsi -->${rsi(candles)[rsi(candles).length - 1]} for ${apiUrls[index]}`);
-          bot.sendMessage(chatId, `sma -->${sma(candles)[sma(candles).length - 1]} for ${apiUrls[index]}`);
+          bot.sendMessage(chatId, `rsi --> BTC --> ${rsi(candles)[rsi(candles).length - 1]}`);
+          bot.sendMessage(chatId, `sma --> BTC --> ${sma(candles)[sma(candles).length - 1]}`);
           // it checks the conditions to see if it can send message?
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
             bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
