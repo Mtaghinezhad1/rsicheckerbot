@@ -26,6 +26,12 @@ bot.on('message', (msg) => {
       // fetch api for loading data
       const apiUrl = 'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72';
       let jsonData;
+      // Define API URLs
+      const apiUrls = [
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=LTC&tsym=USD&limit=72',
+      ];
 
       async function fetchData() {
         try {
@@ -42,17 +48,20 @@ bot.on('message', (msg) => {
         }
       }
 
-      // after data is loaded, this function will run. Call the async function
-      fetchData().then(jsonData => {
-        const data = jsonData;
-        const candles = data.Data.Data;
+      // Fetch data from multiple APIs simultaneously
+      Promise.all(apiUrls.map(fetchData)).then((responses) => {
+        // Process the responses
+        responses.forEach((response, index) => {
+          const data = response;
+          const candles = data.Data.Data;
 
-        bot.sendMessage(chatId,`rsi -->${rsi(candles)[rsi(candles).length - 1]}`);
-        bot.sendMessage(chatId,`sma -->${sma(candles)[sma(candles).length - 1]}`);
-        // it checks the conditions to see if it can send message?
-        if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
-          bot.sendMessage(chatId, 'its time to trade');
-        }
+          bot.sendMessage(chatId, `rsi -->${rsi(candles)[rsi(candles).length - 1]} for ${apiUrls[index]}`);
+          bot.sendMessage(chatId, `sma -->${sma(candles)[sma(candles).length - 1]} for ${apiUrls[index]}`);
+          // it checks the conditions to see if it can send message?
+          if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
+            bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
+          }
+        });
       });
     }, 60000); // 60000 میلی‌ثانیه = 60 ثانیه
 
