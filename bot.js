@@ -57,7 +57,7 @@ bot.on('message', (msg) => {
           const candles = data.Data.Data;
 
           bot.sendMessage(chatId, `rsi -->${rsi(candles)[rsi(candles).length - 1]}`);
-          bot.sendMessage(chatId, `sma -->${sma(candles)[sma(candles).length - 1]} for ${apiUrls[index]}`);
+          bot.sendMessage(chatId, `sma -->${sma(candles)[sma(candles).length - 1]}`);
           // it checks the conditions to see if it can send message?
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
             bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
