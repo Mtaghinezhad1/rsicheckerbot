@@ -28,9 +28,9 @@ bot.on('message', (msg) => {
       let jsonData;
       // Define API URLs
       const apiUrls = [
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=BTC&tsym=USD&limit=72&aggregate=15',
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72',
-        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72',
-        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=LTC&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72&aggregate=4',
         'https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=72',
       ];
 
