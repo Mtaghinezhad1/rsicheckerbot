@@ -52,6 +52,7 @@ bot.on('message', (msg) => {
       // Fetch data from multiple APIs simultaneously
       Promise.all(apiUrls.map(fetchData)).then((responses) => {
         // Process the responses
+        console.log(responses);
         responses.forEach((response, index) => {
           const data = response;
           const candles = data.Data.Data;
