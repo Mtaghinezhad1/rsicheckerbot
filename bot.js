@@ -55,9 +55,19 @@ bot.on('message', (msg) => {
         responses.forEach((response, index) => {
           const data = response;
           const candles = data.Data.Data;
+          let timeframe
+          if (index == 0){
+            timeframe = '15m';
+          } else if (index == 1) {
+            timeframe = '1h'
+          } else if (index == 2) {
+            timeframe = '4h'
+          } else {
+            timeframe = '1d'
+          } 
 
-          bot.sendMessage(chatId, `rsi -->${rsi(candles)[rsi(candles).length - 1]}`);
-          bot.sendMessage(chatId, `sma -->${sma(candles)[sma(candles).length - 1]}`);
+          bot.sendMessage(chatId, `rsi --> ${timeframe} -->${rsi(candles)[rsi(candles).length - 1]}`);
+          bot.sendMessage(chatId, `sma --> ${timeframe} -->${sma(candles)[sma(candles).length - 1]}`);
           // it checks the conditions to see if it can send message?
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
             bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
