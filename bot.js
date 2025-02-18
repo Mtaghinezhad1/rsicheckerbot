@@ -34,9 +34,9 @@ bot.on('message', (msg) => {
         'https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=72',
       ];
 
-      async function fetchData() {
+      async function fetchData(url) {
         try {
-          const response = await fetch(apiUrl);
+          const response = await fetch(url);
           if (!response.ok) {
             throw new Error('err');
           }
@@ -52,7 +52,6 @@ bot.on('message', (msg) => {
       // Fetch data from multiple APIs simultaneously
       Promise.all(apiUrls.map(fetchData)).then((responses) => {
         // Process the responses
-        console.log(responses);
         responses.forEach((response, index) => {
           const data = response;
           const candles = data.Data.Data;
