@@ -71,7 +71,7 @@ bot.on('message', (msg) => {
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
             bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
           }
-          if (detectRSISignal(calculateRSI(candles)) && detectTrend(candles) != 'Sideways'){
+          if (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways'){
             bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
           }
         });
