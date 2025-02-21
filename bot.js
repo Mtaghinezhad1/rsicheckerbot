@@ -56,11 +56,11 @@ bot.on('message', (msg) => {
           const data = response;
           const candles = data.Data.Data;
           let timeframe
-          if (index == 0) {
+          if (index %4 == 0) {
             timeframe = '15m';
-          } else if (index == 1) {
+          } else if (index %4 == 1) {
             timeframe = '1h'
-          } else if (index == 2) {
+          } else if (index %4 == 2) {
             timeframe = '4h'
           } else {
             timeframe = '1d'
