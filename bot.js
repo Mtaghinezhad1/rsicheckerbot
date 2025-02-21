@@ -195,7 +195,7 @@ function detectRSISignal(rsiValues) {
 
 // function to detect trend
 function detectTrend(candles) {
-  let sma9 = calculateSMA(candles, 9); let sma21 = calculateSMA(candles, 21);
+  let sma9 = sma(candles, 9); let sma21 = sma(candles, 21);
 
   if (sma9[sma9.length - 1] > sma21[sma21.length - 1]) {
     return "Uptrend";
