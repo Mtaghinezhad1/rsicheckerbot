@@ -56,7 +56,7 @@ bot.on('message', (msg) => {
           const data = response;
           const candles = data.Data.Data;
           let timeframe
-          if (index == 0){
+          if (index == 0) {
             timeframe = '15m';
           } else if (index == 1) {
             timeframe = '1h'
@@ -64,12 +64,14 @@ bot.on('message', (msg) => {
             timeframe = '4h'
           } else {
             timeframe = '1d'
-          } 
+          }
 
           bot.sendMessage(chatId, `rsi --> ${timeframe} -->${rsi(candles)[rsi(candles).length - 1]}`);
-          bot.sendMessage(chatId, `sma --> ${timeframe} -->${sma(candles)[sma(candles).length - 1]}`);
           // it checks the conditions to see if it can send message?
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
+            bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
+          }
+          if (detectRSISignal(calculateRSI(candles)) && detectTrend(candles) != 'Sideways'){
             bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
           }
         });
@@ -166,6 +168,42 @@ function sma(candles, period = 14) {
   }
 
   return smaValues;
+}
+
+// function to check rsi reached the level 50
+function detectRSISignal(rsiValues) {
+  let crossedAbove65 = false;
+  let crossedUnder35 = false;
+
+  for (let i = 0; i < rsiValues.length; i++) {
+    if (rsiValues[i] > 65) {
+      crossedAbove65 = true;
+    }
+    if (rsiValues[i] < 35) {
+      crossedUnder35 = true;
+    }
+    if (crossedAbove65 && rsiValues[i] <= 51) {
+      return true;
+    }
+    if (crossedUnder35 && rsiValues[i] >= 49) {
+      return true;
+    }
+
+  }
+  return false;
+}
+
+// function to detect trend
+function detectTrend(candles) {
+  let sma9 = calculateSMA(candles, 9); let sma21 = calculateSMA(candles, 21);
+
+  if (sma9[sma9.length - 1] > sma21[sma21.length - 1]) {
+    return "Uptrend";
+  } else if (sma9[sma9.length - 1] < sma21[sma21.length - 1]) {
+    return "Downtrend";
+  } else {
+    return "Sideways";
+  }
 }
 
 console.log('bot is running');
