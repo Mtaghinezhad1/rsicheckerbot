@@ -28,10 +28,21 @@ bot.on('message', (msg) => {
       let jsonData;
       // Define API URLs
       const apiUrls = [
+        //BTC
         'https://min-api.cryptocompare.com/data/v2/histominute?fsym=BTC&tsym=USD&limit=72&aggregate=15',
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72',
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72&aggregate=4',
         'https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=72',
+        //XRP
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=XRP&tsym=USD&limit=72&aggregate=15',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=XRP&tsym=USD&limit=72',
+        //ETH
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=ETH&tsym=USD&limit=72&aggregate=15',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=ETH&tsym=USD&limit=72',
       ];
 
       async function fetchData(url) {
@@ -66,13 +77,24 @@ bot.on('message', (msg) => {
             timeframe = '1d'
           }
 
-          bot.sendMessage(chatId, `rsi --> ${timeframe} -->${rsi(candles)[rsi(candles).length - 1]}`);
+          let coin
+          if (Math.floor(index/4) == 0){
+            coin = 'BTC';
+          }
+          if (Math.floor(index/4) == 1){
+            coin = 'XRP';
+          }
+          if (Math.floor(index/4) == 2){
+            coin = 'ETH';
+          }
+
+          bot.sendMessage(chatId, `rsi --> ${timeframe} --> ${coin} --> ${rsi(candles)[rsi(candles).length - 1]}`);
           // it checks the conditions to see if it can send message?
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
-            bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
+            bot.sendMessage(chatId, `its time to trade for +65 -35 --> ${coin}`);
           }
           if (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways'){
-            bot.sendMessage(chatId, `its time to trade for ${apiUrls[index]}`);
+            bot.sendMessage(chatId, `its time to trade for 50 --> ${coin}`);
           }
         });
       });
