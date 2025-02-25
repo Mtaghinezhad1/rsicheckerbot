@@ -64,6 +64,11 @@ bot.on('message', (msg) => {
       Promise.all(apiUrls.map(fetchData)).then((responses) => {
         // Process the responses
         responses.forEach((response, index) => {
+          if (!response || !response.Data || !response.Data.Data) {
+            console.error(`Invalid or empty response for API at index ${index}`);
+            return; // Skip this iteration
+          }
+          
           const data = response;
           const candles = data.Data.Data;
           let timeframe
