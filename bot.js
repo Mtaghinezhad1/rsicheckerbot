@@ -43,6 +43,26 @@ bot.on('message', (msg) => {
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72',
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72&aggregate=4',
         'https://min-api.cryptocompare.com/data/v2/histoday?fsym=ETH&tsym=USD&limit=72',
+        //ADA
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=ADA&tsym=USD&limit=72&aggregate=15',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ADA&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ADA&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=ADA&tsym=USD&limit=72',
+        //NEAR
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=NEAR&tsym=USD&limit=72&aggregate=15',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=NEAR&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=NEAR&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=NEAR&tsym=USD&limit=72',
+        //DOGE
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=DOGE&tsym=USD&limit=72&aggregate=15',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=DOGE&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=DOGE&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=DOGE&tsym=USD&limit=72',
+        //SOL
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=SOL&tsym=USD&limit=72&aggregate=15',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=SOL&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=SOL&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=SOL&tsym=USD&limit=72',
       ];
 
       async function fetchData(url) {
@@ -68,29 +88,41 @@ bot.on('message', (msg) => {
             console.error(`Invalid or empty response for API at index ${index}`);
             return; // Skip this iteration
           }
-          
+
           const data = response;
           const candles = data.Data.Data;
           let timeframe
-          if (index %4 == 0) {
+          if (index % 4 == 0) {
             timeframe = '15m';
-          } else if (index %4 == 1) {
+          } else if (index % 4 == 1) {
             timeframe = '1h'
-          } else if (index %4 == 2) {
+          } else if (index % 4 == 2) {
             timeframe = '4h'
           } else {
             timeframe = '1d'
           }
 
           let coin
-          if (Math.floor(index/4) == 0){
+          if (Math.floor(index / 4) == 0) {
             coin = 'BTC';
           }
-          if (Math.floor(index/4) == 1){
+          if (Math.floor(index / 4) == 1) {
             coin = 'XRP';
           }
-          if (Math.floor(index/4) == 2){
+          if (Math.floor(index / 4) == 2) {
             coin = 'ETH';
+          }
+          if (Math.floor(index / 4) == 3) {
+            coin = 'ADA';
+          }
+          if (Math.floor(index / 4) == 4) {
+            coin = 'NEAR';
+          }
+          if (Math.floor(index / 4) == 5) {
+            coin = 'DOGE';
+          }
+          if (Math.floor(index / 4) == 6) {
+            coin = 'SOL';
           }
 
           bot.sendMessage(chatId, `rsi --> ${timeframe} --> ${coin} --> ${rsi(candles)[rsi(candles).length - 1]}`);
@@ -98,7 +130,7 @@ bot.on('message', (msg) => {
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
             bot.sendMessage(chatId, `its time to trade for +65 -35 --> ${coin}`);
           }
-          if (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways'){
+          if (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways') {
             bot.sendMessage(chatId, `its time to trade for 50 --> ${coin}`);
           }
         });
