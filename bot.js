@@ -241,10 +241,10 @@ function detectRSISignal(rsiValues) {
     if (rsiValues[i] < 35) {
       crossedUnder35 = true;
     }
-    if (crossedAbove65 && rsiValues[i] <= 51) {
+    if (crossedAbove65 && rsiValues[rsiValues.length - 1] <= 51) {
       return true;
     }
-    if (crossedUnder35 && rsiValues[i] >= 49) {
+    if (crossedUnder35 && rsiValues[rsiValues.length - 1] >= 49) {
       return true;
     }
 
