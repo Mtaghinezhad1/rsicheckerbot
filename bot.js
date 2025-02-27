@@ -1,3 +1,4 @@
+
 const TelegramBot = require('node-telegram-bot-api');
 
 // توکن ربات خود را از BotFather دریافت کنید و جایگزین کنید
@@ -66,17 +67,20 @@ bot.on('message', (msg) => {
       ];
 
       async function fetchData(url) {
-        try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error('err');
+        for (let i = 0; i < 3; i++) {  // 3 is the number of retry
+          try {
+            const response = await fetch(url);
+            // checks if it has a response from api
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const jsonData = await response.json();
+            // checks if its over rate limit of that api
+            if (jsonData.Response == 'Error') {console.log(`rate limit --> ${i}`)};
+            if (jsonData.Response == 'Error') throw new Error(`HTTP error! status: rate limit`);
+            return jsonData;
+          } catch (error) {
+            console.warn(`Retrying (${i + 1}/3)...`);
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second before retrying
           }
-          const jsonData = await response.json();
-
-          // You can now use jsonData here or return it
-          return jsonData;
-        } catch (error) {
-          console.log("error in api", error); // Log the error for debugging
         }
       }
 
@@ -128,10 +132,10 @@ bot.on('message', (msg) => {
           bot.sendMessage(chatId, `rsi --> ${timeframe} --> ${coin} --> ${rsi(candles)[rsi(candles).length - 1]}`);
           // it checks the conditions to see if it can send message?
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
-            bot.sendMessage(chatId, `its time to trade for +65 -35 --> ${coin}`);
+            bot.sendMessage(chatId, `its time to trade for +65 -35 --> ${timeframe} --> ${coin}`);
           }
           if (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways') {
-            bot.sendMessage(chatId, `its time to trade for 50 --> ${coin}`);
+            bot.sendMessage(chatId, `its time to trade for 50 --> ${timeframe} --> ${coin}`);
           }
         });
       });
