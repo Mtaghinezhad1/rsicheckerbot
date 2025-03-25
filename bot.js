@@ -23,11 +23,11 @@ bot.on('message', (msg) => {
       let jsonData;
       // Define API URLs
       const apiUrls = [
-        //BTC
-        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=BTC&tsym=USD&limit=72&aggregate=15',
-        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72',
-        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=72&aggregate=4',
-        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=72',
+        //S
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=S&tsym=USD&limit=72&aggregate=15',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=S&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=S&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=S&tsym=USD&limit=72',
         //XRP
         'https://min-api.cryptocompare.com/data/v2/histominute?fsym=XRP&tsym=USD&limit=72&aggregate=15',
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=72',
@@ -102,7 +102,7 @@ bot.on('message', (msg) => {
 
           let coin
           if (Math.floor(index / 4) == 0) {
-            coin = 'BTC';
+            coin = 'S';
           }
           if (Math.floor(index / 4) == 1) {
             coin = 'XRP';
@@ -127,10 +127,10 @@ bot.on('message', (msg) => {
           
           // it checks the conditions to see if it can send message?
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
-            bot.sendMessage(chatId, `its time to trade for +65 -35 --> ${timeframe} --> ${coin}`);
+            bot.sendMessage(chatId, `time to trade for +65 -35 --> ${timeframe} --> ${coin}`);
           }
           if (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways') {
-            bot.sendMessage(chatId, `its time to trade for 50 --> ${timeframe} --> ${coin}`);
+            bot.sendMessage(chatId, `time to trade for 50 --> ${timeframe} --> ${coin}`);
           }
         });
       });
