@@ -129,7 +129,7 @@ bot.on('message', (msg) => {
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
             bot.sendMessage(chatId, `time to trade for +65 -35 --> ${timeframe} --> ${coin}`);
           }
-          elseif (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways') {
+          else if (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways') {
             bot.sendMessage(chatId, `time to trade for 50 --> ${timeframe} --> ${coin}`);
           }
         });
