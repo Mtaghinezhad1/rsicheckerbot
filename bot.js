@@ -33,11 +33,11 @@ bot.on('message', (msg) => {
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=72',
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=XRP&tsym=USD&limit=72&aggregate=4',
         'https://min-api.cryptocompare.com/data/v2/histoday?fsym=XRP&tsym=USD&limit=72',
-        //ETH
-        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=ETH&tsym=USD&limit=72&aggregate=15',
-        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72',
-        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USD&limit=72&aggregate=4',
-        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=ETH&tsym=USD&limit=72',
+        //API3
+        'https://min-api.cryptocompare.com/data/v2/histominute?fsym=api3&tsym=USD&limit=72&aggregate=15',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=api3&tsym=USD&limit=72',
+        'https://min-api.cryptocompare.com/data/v2/histohour?fsym=api3&tsym=USD&limit=72&aggregate=4',
+        'https://min-api.cryptocompare.com/data/v2/histoday?fsym=api3&tsym=USD&limit=72',
         //ADA
         'https://min-api.cryptocompare.com/data/v2/histominute?fsym=ADA&tsym=USD&limit=72&aggregate=15',
         'https://min-api.cryptocompare.com/data/v2/histohour?fsym=ADA&tsym=USD&limit=72',
@@ -108,7 +108,7 @@ bot.on('message', (msg) => {
             coin = 'XRP';
           }
           if (Math.floor(index / 4) == 2) {
-            coin = 'ETH';
+            coin = 'API3';
           }
           if (Math.floor(index / 4) == 3) {
             coin = 'ADA';
@@ -129,7 +129,7 @@ bot.on('message', (msg) => {
           if ((rsi(candles)[rsi(candles).length - 1]) < 35 || (rsi(candles)[rsi(candles).length - 1] > 65)) {
             bot.sendMessage(chatId, `time to trade for +65 -35 --> ${timeframe} --> ${coin}`);
           }
-          if (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways') {
+          elseif (detectRSISignal(rsi(candles)) && detectTrend(candles) != 'Sideways') {
             bot.sendMessage(chatId, `time to trade for 50 --> ${timeframe} --> ${coin}`);
           }
         });
